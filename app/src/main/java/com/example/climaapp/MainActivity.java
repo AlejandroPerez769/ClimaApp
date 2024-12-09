@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Inicializar vistas
         cityTextView = findViewById(R.id.cityTextView);
         searchEditText = findViewById(R.id.searchEditText);
         searchIcon = findViewById(R.id.search);
@@ -46,10 +45,8 @@ public class MainActivity extends AppCompatActivity {
         descrp = findViewById(R.id.descrp);
         weatherIcon = findViewById(R.id.weatherIcon);
 
-        // Inicializar ViewModel
         viewModel = new ViewModelProvider(this).get(ClimaViewModel.class);
 
-        // Observar cambios en los datos del clima
         viewModel.getWeatherData().observe(this, weatherResponse -> {
             if (weatherResponse != null && weatherResponse.getDays() != null && weatherResponse.getDays().size() > 0) {
                 String fullResolvedAddress = weatherResponse.getResolvedAddress();
@@ -92,10 +89,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Búsqueda inicial
+        //codigo para acceder a la api, por defecto esta sucre
         viewModel.fetchWeather("Sucre", "H2AQ7DADRVHEAHUTSVTQ53GRU");
 
-        // Configurar barra de búsqueda
+
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

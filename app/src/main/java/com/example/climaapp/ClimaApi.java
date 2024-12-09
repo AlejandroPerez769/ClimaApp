@@ -11,8 +11,8 @@ public interface ClimaApi {
     @GET("{city}")
     Call<ClimaResponse> getWeather(
             @Path("city") String city,
-            @Query("unitGroup") String unitGroup, // Métrico o imperial
+            @Query("unitGroup") String unitGroup,
             @Query("key") String apiKey,
-            @Query("contentType") String contentType // Tipo de respuesta JSON
+            @Query("contentType") String contentType
     );
 }

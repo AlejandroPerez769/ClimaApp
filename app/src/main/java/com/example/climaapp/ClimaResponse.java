@@ -35,9 +35,9 @@ public class ClimaResponse {
         private double tempMax;
         private double tempMin;
         private String conditions;
-        private String sunrise; // Timestamp Unix
-        private String sunset;  // Timestamp Unix
-        private int timezoneOffset; // Offset de la zona horaria en segundos
+        private String sunrise;
+        private String sunset;
+        private int timezoneOffset;
         private String timezone;
         private int datetimeEpoch;
 
