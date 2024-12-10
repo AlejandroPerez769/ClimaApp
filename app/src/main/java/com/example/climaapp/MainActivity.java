@@ -13,11 +13,15 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView tempMinMax;
     private TextView descrp;
     private ImageView weatherIcon;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         tempMinMax = findViewById(R.id.tempMinMax);
         descrp = findViewById(R.id.descrp);
         weatherIcon = findViewById(R.id.weatherIcon);
+        recyclerView = findViewById(R.id.recyclerView);
+
 
         viewModel = new ViewModelProvider(this).get(ClimaViewModel.class);
 
@@ -67,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
 
                 double tempMinInCelsius = (tempMinInFahrenheit - 32) * 5 / 9;
                 double tempMaxInCelsius = (tempMaxInFahrenheit - 32) * 5 / 9;
+                Log.e("ClimaApp", "Temp Min (F): " + weatherResponse.getDays().get(0).getTempMin());
+                Log.e("ClimaApp", "Temp Max (F): " + weatherResponse.getDays().get(0).getTempMax());
+
 
                 tempMinMax.setText(String.format("Min: %.1f°C / Max: %.1f°C", tempMinInCelsius, tempMaxInCelsius));
 
@@ -86,11 +96,76 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     weatherIcon.setImageResource(isNight ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
                 }
+
+                List<Integer> imagenes = new ArrayList<>();
+                List<String> textoHora = new ArrayList<>();
+                List<String> textoTemp = new ArrayList<>();
+
+                ClimaResponse.Day currentDay = weatherResponse.getDays().get(0);
+                List<ClimaResponse.Hour> horas = currentDay.getHours();
+
+
+                TimeZone timeZone = TimeZone.getTimeZone(weatherResponse.getTimezone());
+                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+                timeFormat.setTimeZone(timeZone);
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeZone(timeZone);
+                int currentHourLocal = calendar.get(Calendar.HOUR_OF_DAY);
+
+
+                for (ClimaResponse.Hour hour : horas) {
+                    try {
+
+                        String hourFormatted = hour.getDatetime().substring(0, 5);
+                        Date localTime = timeFormat.parse(hourFormatted);
+
+
+                        calendar.setTime(localTime);
+                        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
+                        if (hourOfDay > currentHourLocal) {
+                            textoHora.add(hourFormatted);
+
+                            double tempInCelsiuss = (hour.getTemp() - 32) * 5 / 9;
+                            textoTemp.add(String.format("%.1f°C", tempInCelsiuss));
+
+
+                            Date sunriseTime = timeFormat.parse(currentDay.getSunrise());
+                            Date sunsetTime = timeFormat.parse(currentDay.getSunset());
+
+                            boolean isNightt = localTime.before(sunriseTime) || localTime.after(sunsetTime);
+
+                            String conditionn = currentDay.getConditions();
+                            if (conditionn.contains("Sunny")) {
+                                imagenes.add(isNightt ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
+                            } else if (conditionn.contains("Cloudy") || conditionn.contains("Overcast") || conditionn.contains("Partially cloudy")) {
+                                imagenes.add(isNightt ? R.drawable.night_cloudy_icon : R.drawable.cloudy_icon);
+                            } else if (conditionn.contains("Rain")) {
+                                imagenes.add(isNightt ? R.drawable.rainy_night : R.drawable.rainy_icon);
+                            } else if (conditionn.contains("Snow")) {
+                                imagenes.add(isNightt ? R.drawable.night_snow : R.drawable.snowy_icon);
+                            } else {
+                                imagenes.add(isNight ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
+                            }
+                        }
+                    } catch (ParseException e) {
+                        Log.e("ClimaApp", "Error al procesar la hora: " + e.getMessage());
+                    }
+                }
+
+// Configurar RecyclerView con los datos procesados
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(layoutManager);
+
+                CardAdapter adapter = new CardAdapter(imagenes, textoHora, textoTemp);
+                recyclerView.setAdapter(adapter);
+
+
             }
         });
 
-        //codigo para acceder a la api, por defecto esta sucre
-        viewModel.fetchWeather("Sucre", "H2AQ7DADRVHEAHUTSVTQ53GRU");
+        viewModel.fetchWeather("Madrid", "H2AQ7DADRVHEAHUTSVTQ53GRU");
 
 
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -169,6 +244,10 @@ public class MainActivity extends AppCompatActivity {
             Log.e("ClimaApp", "Error al analizar las horas: " + e.getMessage());
             return false;
         }
+
+
+
+
     }
 
 

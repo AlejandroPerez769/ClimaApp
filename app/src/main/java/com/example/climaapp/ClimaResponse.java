@@ -32,22 +32,15 @@ public class ClimaResponse {
 
     public static class Day {
         private double temp;
-        private double tempMax;
-        private double tempMin;
+        private double tempmax;
+        private double tempmin;
         private String conditions;
         private String sunrise;
         private String sunset;
         private int timezoneOffset;
         private String timezone;
         private int datetimeEpoch;
-
-        public int getDatetimeEpoch() {
-            return datetimeEpoch;
-        }
-
-        public String getTimezone() {
-            return timezone;
-        }
+        private List<Hour> hours; // Lista de horas para este día
 
         // Getters
         public double getTemp() {
@@ -55,11 +48,11 @@ public class ClimaResponse {
         }
 
         public double getTempMax() {
-            return tempMax;
+            return tempmax;
         }
 
         public double getTempMin() {
-            return tempMin;
+            return tempmin;
         }
 
         public String getConditions() {
@@ -77,6 +70,30 @@ public class ClimaResponse {
         public int getTimezoneOffset() {
             return timezoneOffset;
         }
+
+        public String getTimezone() {
+            return timezone;
+        }
+
+        public int getDatetimeEpoch() {
+            return datetimeEpoch;
+        }
+
+        public List<Hour> getHours() {
+            return hours;
+        }
     }
 
+    public static class Hour {
+        private String datetime;
+        private double temp;
+
+        public String getDatetime() {
+            return datetime;
+        }
+
+        public double getTemp() {
+            return temp;
+        }
+    }
 }
