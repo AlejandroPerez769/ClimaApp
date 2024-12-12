@@ -5,16 +5,26 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,14 +37,14 @@ import java.util.TimeZone;
 public class MainActivity extends AppCompatActivity {
 
     private ClimaViewModel viewModel;
-    private TextView cityTextView, horario;
     private EditText searchEditText;
     private ImageView searchIcon;
-    private TextView tempTextView;
-    private TextView tempMinMax;
-    private TextView descrp;
+    private TextView tempTextView, tempMinMax, descrp, cityTextView, horario;
     private ImageView weatherIcon;
     private RecyclerView recyclerView;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean isNight = esNoche(weatherResponse.getDays().get(0).getSunrise(), weatherResponse.getDays().get(0).getSunset(), weatherResponse.getTimezone());
 
                 if (condition.contains("sunny")) {
-                    weatherIcon.setImageResource(isNight ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
+                    weatherIcon.setImageResource(isNight ? R.drawable.night : R.drawable.sunny_icon);
                 } else if (condition.contains("overcast") || condition.contains("cloudy")) {
                     weatherIcon.setImageResource(isNight ? R.drawable.night_cloudy_icon : R.drawable.cloudy);
                 } else if (condition.contains("rain")) {
@@ -92,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     weatherIcon.setImageResource(isNight ? R.drawable.night_snow : R.drawable.snowy_icon);
                 }
                 else {
-                    weatherIcon.setImageResource(isNight ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
+                    weatherIcon.setImageResource(isNight ? R.drawable.night : R.drawable.sunny_icon);
                 }
 
                 List<Integer> imagenes = new ArrayList<>();
@@ -136,10 +146,15 @@ public class MainActivity extends AppCompatActivity {
                 //Ej 17:00
                 /**
                  * @hora extraemos solo la hora
+                 * @minuto extramos solo los minutos
+                 * Esto será utilizado para obtener el horario del lugar
                  */
                 int hora = calendar.get(Calendar.HOUR_OF_DAY);
                 int minuto = calendar.get(Calendar.MINUTE);
+
                 horario.setText(hora + ":" + minuto);
+
+                
 
                 for (ClimaResponse.Hour hour : horas) {
                     try {
@@ -149,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                         textoHora.add(hourFormatted);
                         double tempInCelsiuss = (hour.getTemp() - 32) * 5 / 9;
                         textoTemp.add(String.format("%.1f°C", tempInCelsiuss));
-                        
+
                         Date sunriseTime = timeFormat.parse(currentDay.getSunrise());
                         Date sunsetTime = timeFormat.parse(currentDay.getSunset());
                         Date localTime = timeFormat.parse(hourFormatted);
@@ -158,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
                         String icono = hour.getIcon();
                         if (icono.contains("sunny") || icono.contains("clear")) {
-                            imagenes.add(isNightt ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
+                            imagenes.add(isNightt ? R.drawable.night : R.drawable.sunny_icon);
                         } else if (icono.contains("cloudy") || icono.contains("overcast") || icono.contains("partially cloudy")) {
                             imagenes.add(isNightt ? R.drawable.night_cloudy_icon : R.drawable.cloudy);
                         } else if (icono.contains("rain")) {
@@ -166,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         } else if (icono.contains("snow")) {
                             imagenes.add(isNightt ? R.drawable.night_snow : R.drawable.snowy_icon);
                         } else {
-                            imagenes.add(isNightt ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
+                            imagenes.add(isNightt ? R.drawable.night : R.drawable.sunny_icon);
                         }
 
 
@@ -277,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
 
 

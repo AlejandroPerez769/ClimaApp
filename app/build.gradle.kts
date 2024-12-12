@@ -49,9 +49,6 @@ dependencies {
     implementation ("androidx.recyclerview:recyclerview:1.3.1")
     implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation ("com.github.bumptech.glide:glide:4.15.1")
-    implementation ("androidx.viewpager2:viewpager2:1.0.0")
-    implementation ("com.romandanylyk:pageindicatorview:1.0.3")
-
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.1")
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)

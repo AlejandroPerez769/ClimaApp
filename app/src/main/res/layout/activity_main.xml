@@ -8,6 +8,7 @@
     android:background="@drawable/dregradado"
     tools:context=".MainActivity">
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,6 +22,9 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="28dp">
+
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/weatherCard3"
         android:layout_width="350dp"
@@ -59,9 +63,10 @@
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:hint="Introduzca una ciudad"
-        android:background="@drawable/edittext_background"
         android:textColor="@android:color/black"
+        android:textColorHint="@color/white"
         android:visibility="gone"
+        android:background="@null"
         android:layout_gravity="end"
         android:inputType="text"
         android:paddingStart="10dp"
