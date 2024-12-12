@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.widget.Toolbar;
+
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -19,6 +22,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,9 +47,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tempTextView, tempMinMax, descrp, cityTextView, horario;
     private ImageView weatherIcon;
     private RecyclerView recyclerView;
-    private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle toggle;
-    NavigationView navigationView;
+    Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
         weatherIcon = findViewById(R.id.weatherIcon);
         recyclerView = findViewById(R.id.recyclerView);
         horario = findViewById(R.id.hora);
-
 
         viewModel = new ViewModelProvider(this).get(ClimaViewModel.class);
 
@@ -154,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
 
                 horario.setText(hora + ":" + minuto);
 
-                
+
 
                 for (ClimaResponse.Hour hour : horas) {
                     try {
@@ -292,8 +295,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
 }
