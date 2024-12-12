@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#39496B"
+    android:background="@drawable/dregradado"
     tools:context=".MainActivity">
 
     <ScrollView
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="30dp">
+            android:padding="28dp">
     <androidx.cardview.widget.CardView
         android:id="@+id/weatherCard3"
         android:layout_width="350dp"
@@ -66,7 +66,8 @@
         android:inputType="text"
         android:paddingStart="10dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginTop="28dp"/>
+        android:layout_marginTop="28dp"
+        />
 
 
     </androidx.cardview.widget.CardView>
@@ -87,7 +88,7 @@
         android:layout_height="300dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="8dp"
-        android:backgroundTint="#9039496B"
+        android:backgroundTint="#900A4865"
         app:layout_constraintTop_toBottomOf="@id/linea"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -123,12 +124,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tempMinMax"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:text="Temp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_gravity="center|bottom"
             android:layout_marginBottom="60dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/hora"
+            android:text="Hora "
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="25dp"
+            android:textColor="@color/white"/>
 
 
     </androidx.cardview.widget.CardView>

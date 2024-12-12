@@ -22,13 +22,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
     private ClimaViewModel viewModel;
-    private TextView cityTextView;
+    private TextView cityTextView, horario;
     private EditText searchEditText;
     private ImageView searchIcon;
     private TextView tempTextView;
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         descrp = findViewById(R.id.descrp);
         weatherIcon = findViewById(R.id.weatherIcon);
         recyclerView = findViewById(R.id.recyclerView);
+        horario = findViewById(R.id.hora);
 
 
         viewModel = new ViewModelProvider(this).get(ClimaViewModel.class);
@@ -74,23 +74,21 @@ public class MainActivity extends AppCompatActivity {
 
                 double tempMinInCelsius = (tempMinInFahrenheit - 32) * 5 / 9;
                 double tempMaxInCelsius = (tempMaxInFahrenheit - 32) * 5 / 9;
-                Log.e("ClimaApp", "Temp Min (F): " + weatherResponse.getDays().get(0).getTempMin());
-                Log.e("ClimaApp", "Temp Max (F): " + weatherResponse.getDays().get(0).getTempMax());
 
 
                 tempMinMax.setText(String.format("Min: %.1f°C / Max: %.1f°C", tempMinInCelsius, tempMaxInCelsius));
 
-                String condition = weatherResponse.getDays().get(0).getConditions();
+                String condition = weatherResponse.getDays().get(0).getIcon();
                 boolean isNight = esNoche(weatherResponse.getDays().get(0).getSunrise(), weatherResponse.getDays().get(0).getSunset(), weatherResponse.getTimezone());
 
-                if (condition.contains("Sunny")) {
+                if (condition.contains("sunny")) {
                     weatherIcon.setImageResource(isNight ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
-                } else if (condition.contains("Overcast")) {
-                    weatherIcon.setImageResource(isNight ? R.drawable.night_cloudy_icon : R.drawable.cloudy_icon);
-                } else if (condition.contains("Rain")) {
+                } else if (condition.contains("overcast") || condition.contains("cloudy")) {
+                    weatherIcon.setImageResource(isNight ? R.drawable.night_cloudy_icon : R.drawable.cloudy);
+                } else if (condition.contains("rain")) {
                     weatherIcon.setImageResource(isNight ? R.drawable.rainy_night : R.drawable.rainy_icon);
                 }
-                else if (condition.contains("Snow")) {
+                else if (condition.contains("snow")) {
                     weatherIcon.setImageResource(isNight ? R.drawable.night_snow : R.drawable.snowy_icon);
                 }
                 else {
@@ -101,60 +99,85 @@ public class MainActivity extends AppCompatActivity {
                 List<String> textoHora = new ArrayList<>();
                 List<String> textoTemp = new ArrayList<>();
 
+                /**
+                 * @currentDay Obtiene toda la informacion del día de hoy
+                 * Existe un array llamado horas que tiene las horas de cada día con la
+                 * información del tiempo
+                 */
                 ClimaResponse.Day currentDay = weatherResponse.getDays().get(0);
                 List<ClimaResponse.Hour> horas = currentDay.getHours();
 
 
+
+                /**
+                 * @horas Es una lista con todas las horas
+                 * @weather.getTimezome() obtenemos la zona horaria
+                 * Por ejemplo "Europe/Madrid"
+                 * Esto es introducido en el objeto TimeZone.getTimeZone para
+                 * obtener la zona horaria y lo metemos en una variable
+                 * @timeZone
+                 *
+                 */
+
                 TimeZone timeZone = TimeZone.getTimeZone(weatherResponse.getTimezone());
+                /**
+                 * @timeFormat para crear el formato de la hora, es decir,
+                 * como queremos que se muestre la hora
+                 */
                 SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
                 timeFormat.setTimeZone(timeZone);
 
+                /**
+                 * @calendar Nos ayudará a obtener la hora
+                 */
                 Calendar calendar = Calendar.getInstance();
-                calendar.setTimeZone(timeZone);
-                int currentHourLocal = calendar.get(Calendar.HOUR_OF_DAY);
+                calendar.setTimeZone(timeZone); //Aquí ya hemos obtenido la hora de la zona horaria
 
+                //Ej 17:00
+                /**
+                 * @hora extraemos solo la hora
+                 */
+                int hora = calendar.get(Calendar.HOUR_OF_DAY);
+                int minuto = calendar.get(Calendar.MINUTE);
+                horario.setText(hora + ":" + minuto);
 
                 for (ClimaResponse.Hour hour : horas) {
                     try {
-
                         String hourFormatted = hour.getDatetime().substring(0, 5);
+
+                        // Añadir todas las horas sin filtrar
+                        textoHora.add(hourFormatted);
+                        double tempInCelsiuss = (hour.getTemp() - 32) * 5 / 9;
+                        textoTemp.add(String.format("%.1f°C", tempInCelsiuss));
+                        
+                        Date sunriseTime = timeFormat.parse(currentDay.getSunrise());
+                        Date sunsetTime = timeFormat.parse(currentDay.getSunset());
                         Date localTime = timeFormat.parse(hourFormatted);
 
+                        boolean isNightt = localTime.before(sunriseTime) || localTime.after(sunsetTime);
 
-                        calendar.setTime(localTime);
-                        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
-
-                        if (hourOfDay > currentHourLocal) {
-                            textoHora.add(hourFormatted);
-
-                            double tempInCelsiuss = (hour.getTemp() - 32) * 5 / 9;
-                            textoTemp.add(String.format("%.1f°C", tempInCelsiuss));
-
-
-                            Date sunriseTime = timeFormat.parse(currentDay.getSunrise());
-                            Date sunsetTime = timeFormat.parse(currentDay.getSunset());
-
-                            boolean isNightt = localTime.before(sunriseTime) || localTime.after(sunsetTime);
-
-                            String conditionn = currentDay.getConditions();
-                            if (conditionn.contains("Sunny")) {
-                                imagenes.add(isNightt ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
-                            } else if (conditionn.contains("Cloudy") || conditionn.contains("Overcast") || conditionn.contains("Partially cloudy")) {
-                                imagenes.add(isNightt ? R.drawable.night_cloudy_icon : R.drawable.cloudy_icon);
-                            } else if (conditionn.contains("Rain")) {
-                                imagenes.add(isNightt ? R.drawable.rainy_night : R.drawable.rainy_icon);
-                            } else if (conditionn.contains("Snow")) {
-                                imagenes.add(isNightt ? R.drawable.night_snow : R.drawable.snowy_icon);
-                            } else {
-                                imagenes.add(isNight ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
-                            }
+                        String icono = hour.getIcon();
+                        if (icono.contains("sunny") || icono.contains("clear")) {
+                            imagenes.add(isNightt ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
+                        } else if (icono.contains("cloudy") || icono.contains("overcast") || icono.contains("partially cloudy")) {
+                            imagenes.add(isNightt ? R.drawable.night_cloudy_icon : R.drawable.cloudy);
+                        } else if (icono.contains("rain")) {
+                            imagenes.add(isNightt ? R.drawable.rainy_night : R.drawable.rainy_icon);
+                        } else if (icono.contains("snow")) {
+                            imagenes.add(isNightt ? R.drawable.night_snow : R.drawable.snowy_icon);
+                        } else {
+                            imagenes.add(isNightt ? R.drawable.night_clear_icon : R.drawable.sunny_icon);
                         }
+
+
+
                     } catch (ParseException e) {
                         Log.e("ClimaApp", "Error al procesar la hora: " + e.getMessage());
                     }
                 }
 
-// Configurar RecyclerView con los datos procesados
+
+
                 LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
 
@@ -164,8 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-        viewModel.fetchWeather("Madrid", "H2AQ7DADRVHEAHUTSVTQ53GRU");
+        viewModel.fetchWeather("Sucre", "H2AQ7DADRVHEAHUTSVTQ53GRU");
 
 
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -189,17 +211,23 @@ public class MainActivity extends AppCompatActivity {
                 String city = searchEditText.getText().toString().trim();
                 if (!city.isEmpty()) {
                     viewModel.fetchWeather(city, "H2AQ7DADRVHEAHUTSVTQ53GRU");
-                    toggleSearchBar();
+                    desaparecerBarra();
                 }
                 return true;
             }
             return false;
         });
 
-        searchIcon.setOnClickListener(v -> toggleSearchBar());
+        searchIcon.setOnClickListener(v -> desaparecerBarra());
     }
 
-    private void toggleSearchBar() {
+    /**
+     * Este metodo es utilizado para cuando apretemos al boton de buscar
+     * aparezca el buscados para introducir un nombre.
+     * Cuando es introducido, desaparece la barra y aparece el nombre de la ciudad
+     * introducida.
+     */
+    private void desaparecerBarra() {
         if (searchEditText.getVisibility() == View.GONE) {
             cityTextView.setVisibility(View.GONE);
             searchEditText.setVisibility(View.VISIBLE);

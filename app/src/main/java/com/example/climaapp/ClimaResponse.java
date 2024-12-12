@@ -40,9 +40,14 @@ public class ClimaResponse {
         private int timezoneOffset;
         private String timezone;
         private int datetimeEpoch;
-        private List<Hour> hours; // Lista de horas para este día
+        private List<Hour> hours;
+        private String icon;
 
-        // Getters
+
+        public String getIcon() {
+            return icon;
+        }
+
         public double getTemp() {
             return temp;
         }
@@ -87,7 +92,13 @@ public class ClimaResponse {
     public static class Hour {
         private String datetime;
         private double temp;
+        private String conditions;
+        private String icon;
 
+
+        public String getIcon() {
+            return icon;
+        }
         public String getDatetime() {
             return datetime;
         }
@@ -95,5 +106,10 @@ public class ClimaResponse {
         public double getTemp() {
             return temp;
         }
+
+        public String getConditions() {
+            return conditions;
+        }
+
     }
 }
