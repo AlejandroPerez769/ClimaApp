@@ -7,6 +7,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * Esta clase es utilizada para instanciar el contenido que tendrán los
+ * objetos de la RecyclerView
+ */
 public class CardViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView imageView;
