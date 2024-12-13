@@ -1,5 +1,7 @@
 package com.example.climaapp;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class ClimaResponse {
@@ -42,7 +44,43 @@ public class ClimaResponse {
         private int datetimeEpoch;
         private List<Hour> hours;
         private String icon;
+        @SerializedName("windgust")
+        private double windGust;
+        @SerializedName("windspeed")
+        private double windSpeed;
+        private double pressure;
+        @SerializedName("solarradiation")
+        private double solarRadiation;
+        @SerializedName("solarenergy")
+        private double solarEnergy;
+        private double uvindex;
 
+        public double getUvindex() {
+            return uvindex;
+        }
+
+        public double getTempmax() {
+            return tempmax;
+        }
+
+        public double getSolarEnergy() {
+            return solarEnergy;
+        }
+
+        public double getSolarRadiation() {
+            return solarRadiation;
+        }
+
+        public double getPressure() {
+            return pressure;
+        }
+        public double getWindgust() {
+            return  windGust;
+        }
+
+        public double getWindspeed() {
+            return  windSpeed;
+        }
 
         public String getIcon() {
             return icon;

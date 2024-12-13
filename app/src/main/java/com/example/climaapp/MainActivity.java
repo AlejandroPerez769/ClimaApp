@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText searchEditText;
     private ImageView searchIcon;
     private TextView tempTextView, tempMinMax, descrp, cityTextView, horario;
+    private TextView amanecerTextView, anochecerTextView;
+    private TextView velocidadTextView, rafagaTextView, uvTextView;
+    private TextView presionTextView, radiationTextView, sunEnergyTextView;
     private ImageView weatherIcon;
     private RecyclerView recyclerView;
     Toolbar toolbar;
@@ -64,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
         weatherIcon = findViewById(R.id.weatherIcon);
         recyclerView = findViewById(R.id.recyclerView);
         horario = findViewById(R.id.hora);
+        amanecerTextView = findViewById(R.id.amanecer);
+        anochecerTextView = findViewById(R.id.anochecer);
+        rafagaTextView = findViewById(R.id.rafaga);
+        velocidadTextView = findViewById(R.id.velocidad);
+        presionTextView = findViewById(R.id.presion);
+        sunEnergyTextView = findViewById(R.id.solarEnergy);
+        radiationTextView = findViewById(R.id.radiation);
+        uvTextView = findViewById(R.id.radiationUV);
 
         viewModel = new ViewModelProvider(this).get(ClimaViewModel.class);
 
@@ -94,6 +105,15 @@ public class MainActivity extends AppCompatActivity {
                 String condition = weatherResponse.getDays().get(0).getIcon();
                 boolean isNight = esNoche(weatherResponse.getDays().get(0).getSunrise(), weatherResponse.getDays().get(0).getSunset(), weatherResponse.getTimezone());
 
+                amanecerTextView.setText(weatherResponse.getDays().get(0).getSunrise());
+                anochecerTextView.setText(weatherResponse.getDays().get(0).getSunset());
+                velocidadTextView.setText("Velocidad de viento: " + weatherResponse.getDays().get(0).getWindspeed());
+                rafagaTextView.setText("Fuerza del viento: " + weatherResponse.getDays().get(0).getWindgust());
+                presionTextView.setText("Presión atmosférica: " + weatherResponse.getDays().get(0).getPressure());
+                sunEnergyTextView.setText("Energia solar: " + weatherResponse.getDays().get(0).getSolarEnergy());
+                radiationTextView.setText("Radiación: " + weatherResponse.getDays().get(0).getSolarRadiation());
+                uvTextView.setText("Radiación UV: " + weatherResponse.getDays().get(0).getUvindex());
+
                 if (condition.contains("sunny")) {
                     weatherIcon.setImageResource(isNight ? R.drawable.night : R.drawable.sunny_icon);
                 } else if (condition.contains("overcast") || condition.contains("cloudy")) {
@@ -107,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     weatherIcon.setImageResource(isNight ? R.drawable.night : R.drawable.sunny_icon);
                 }
+
+
 
                 List<Integer> imagenes = new ArrayList<>();
                 List<String> textoHora = new ArrayList<>();
@@ -155,7 +177,8 @@ public class MainActivity extends AppCompatActivity {
                 int hora = calendar.get(Calendar.HOUR_OF_DAY);
                 int minuto = calendar.get(Calendar.MINUTE);
 
-                horario.setText(hora + ":" + minuto);
+                horario.setText(String.format("%02d:%02d", hora, minuto));
+
 
 
 
@@ -163,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         String hourFormatted = hour.getDatetime().substring(0, 5);
 
-                        // Añadir todas las horas sin filtrar
                         textoHora.add(hourFormatted);
                         double tempInCelsiuss = (hour.getTemp() - 32) * 5 / 9;
                         textoTemp.add(String.format("%.1f°C", tempInCelsiuss));

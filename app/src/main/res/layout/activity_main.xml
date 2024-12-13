@@ -152,24 +152,310 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="190dp"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="#9039496B"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="5dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Prevision 24 horas"
+                        android:textColor="@color/white"
+                        android:textSize="12dp"
+                        android:textStyle="bold"
+                        android:layout_margin="30dp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:clipToPadding="false"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:layout_marginTop="55dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:scrollbars="none" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:backgroundTint="#9039496B"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="8dp">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/recyclerView"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:clipToPadding="false"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginStart="15dp"
-                        android:layout_marginEnd="15dp"
-                        android:scrollbars="none" />
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="20dp">
+
+                            <TextView
+                                android:id="@+id/et2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textStyle="bold"
+                                android:text="Amanecer"
+                                android:textSize="16sp"
+                                android:padding="10dp"
+                                android:textColor="@color/white"
+                                android:gravity="center_horizontal" />
+
+                            <TextView
+                                android:id="@+id/etiqueta"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textStyle="bold"
+                                android:text="Anochecer"
+                                android:textSize="16sp"
+                                android:padding="10dp"
+                                android:textColor="@color/white"
+                                android:gravity="center_horizontal" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="50dp"
+                                android:src="@drawable/sunrise"
+                                android:layout_marginEnd="80dp"
+                              />
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="50dp"
+                                android:src="@drawable/sunset"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginStart="20dp"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/amanecer"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textStyle="bold"
+                                android:text="Amanecer"
+                                android:textSize="16sp"
+                                android:padding="10dp"
+                                android:textColor="@color/white"
+                                android:gravity="center_horizontal" />
+
+                            <TextView
+                                android:id="@+id/anochecer"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textStyle="bold"
+                                android:text="Anochecer"
+                                android:textSize="16sp"
+                                android:padding="10dp"
+                                android:textColor="@color/white"
+                                android:gravity="center_horizontal" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="175dp"
+                        android:layout_height="140dp"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#9039496B"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="3dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="50dp"
+                                android:src="@drawable/wind"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="30dp"/>
+
+                            <TextView
+                                android:id="@+id/rafaga"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rafaga de viento: "
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="12dp"
+                                android:layout_gravity="center"/>
+                            <TextView
+                                android:id="@+id/velocidad"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Velocidad de viento: "
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="12dp"
+                                android:layout_gravity="center"/>
+
+
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="175dp"
+                        android:layout_height="140dp"
+                        android:layout_marginTop="20dp"
+                        android:backgroundTint="#9039496B"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="3dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_marginTop="10dp">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/presion"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="30dp"/>
+
+                        <TextView
+                            android:id="@+id/presion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Presión atmosférica: "
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="10dp"
+                            android:layout_gravity="center"/>
+
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="175dp"
+                    android:layout_height="140dp"
+                    android:backgroundTint="#9039496B"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/radiation"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="30dp"/>
+
+                        <TextView
+                            android:id="@+id/radiation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Radiación "
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="10dp"
+                            android:layout_gravity="center"/>
+
+                        <TextView
+                            android:id="@+id/solarEnergy"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Energia solar "
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="10dp"
+                            android:layout_gravity="center"/>
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="175dp"
+                    android:layout_height="140dp"
+                    android:backgroundTint="#9039496B"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="3dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/uv"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="30dp"/>
+
+                        <TextView
+                            android:id="@+id/radiationUV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Radiación UV "
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_gravity="center"/>
+
+
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
 
             </LinearLayout>
         </ScrollView>
